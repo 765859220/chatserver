@@ -5,7 +5,7 @@ TcpClient ： 用于编写客户端程序的
 
 epoll + 线程池
 好处：能够把网络I/O的代码和业务代码区分开
-                        用户的连接和断开       用户的可读写事件
+只关注两件事：没    用户的连接和断开       用户的可读写事件
 */
 #include <muduo/net/TcpServer.h>
 #include <muduo/net/EventLoop.h>
@@ -29,7 +29,7 @@ class ChatServer
 public:
     ChatServer(EventLoop *loop,               // 事件循环
                const InetAddress &listenAddr, // IP+Port
-               const string &nameArg)
+               const string &nameArg)         // server的名称
         : _server(loop, listenAddr, nameArg), _loop(loop)
     {
         // 给服务器注册用户连接的创建和断开回调
@@ -55,17 +55,18 @@ private:
         {
             cout << conn->peerAddress().toIpPort() << " -> " << conn->localAddress().toIpPort() << " state:online" << endl;
         }
+        //peer：对端
         else
         {
             cout << conn->peerAddress().toIpPort() << " -> " << conn->localAddress().toIpPort() << " state:offline" << endl;
             conn->shutdown(); // close(fd)
-            // _loop->quit();
+            // _loop->quit(); 不提供服务了，关闭时间循环
         }
     }
 
     // 专门处理用户的读写事件
     void onMessage(const TcpConnectionPtr &conn, // 连接
-                   Buffer *buffer,               // 缓冲区
+                   Buffer *buffer,               // TCP接收缓冲区
                    Timestamp time)               // 接收到数据的时间信息
     {
         string buf = buffer->retrieveAllAsString();
@@ -79,7 +80,7 @@ private:
 
 int main()
 {
-    EventLoop loop; // epoll
+    EventLoop loop; // 相当于创建了一个epoll
     InetAddress addr("127.0.0.1", 6000);
     ChatServer server(&loop, addr, "ChatServer");
 

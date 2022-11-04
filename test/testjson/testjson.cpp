@@ -66,13 +66,15 @@ string func3()
 
 int main()
 {
-    string recvBuf = func1();
+    string buf = func2();
+    cout << buf << endl;
+    //string recvBuf = func1();
     // 数据的反序列化   json字符串 =》反序列化 数据对象（看作容器，方便访问）
-    json jsbuf = json::parse(recvBuf);
-    cout<<jsbuf["msg_type"]<<endl;
-    cout<<jsbuf["from"]<<endl;
-    cout<<jsbuf["to"]<<endl;
-    cout<<jsbuf["msg"]<<endl;
+    // json jsbuf = json::parse(recvBuf);
+    // cout<<jsbuf["msg_type"]<<endl;
+    // cout<<jsbuf["from"]<<endl;
+    // cout<<jsbuf["to"]<<endl;
+    // cout<<jsbuf["msg"]<<endl;
 
     // cout<<jsbuf["id"]<<endl;
     // auto arr = jsbuf["id"];
