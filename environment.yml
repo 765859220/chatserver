@@ -1,4 +1,5 @@
-name: qdiff
+name: qdiff2
+
 channels:
   - pytorch
   - nvidia
@@ -13,7 +14,6 @@ dependencies:
   - numpy
   - pip:
     - albumentations==0.4.3
-    - diffusers==0.3.0
     - pudb==2019.2
     - invisible-watermark
     - imageio==2.9.0
